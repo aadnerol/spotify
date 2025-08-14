@@ -10,12 +10,12 @@ let artistSongChart = null;
 const compactChartOptions = {
     responsive: true,
     maintainAspectRatio: false, // honor CSS height
-    layout: { padding: 0 },
+    layout: { padding: { top: 5, bottom: 5, left: 5, right: 5 } },
     elements: {
         bar: {
-            borderRadius: 6,
+            borderRadius: 4,
             borderSkipped: false,
-            maxBarThickness: 22
+            maxBarThickness: 16
         }
     },
     plugins: {
@@ -31,13 +31,16 @@ const compactChartOptions = {
     scales: {
         x: {
             grid: { display: false },
-            ticks: { font: { size: 10 } }
+            ticks: { font: { size: 9 }, maxRotation: 45 },
+            border: { display: false }
         },
         y: {
             beginAtZero: true,
             grid: { display: false },
+            border: { display: false },
             ticks: {
-                font: { size: 10 },
+                font: { size: 9 },
+                maxTicksLimit: 5,
                 callback: function(value) {
                     return formatTime(value * 60 * 1000);
                 }

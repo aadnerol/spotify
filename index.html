@@ -23,7 +23,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
         }
 
         .header {
@@ -46,8 +46,8 @@
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
@@ -76,8 +76,14 @@
         }
 
         .chart-container canvas {
-            height: 160px !important;
-            max-height: 160px;
+            height: 120px !important;
+            max-height: 120px;
+            width: 100% !important;
+        }
+        
+        .chart-container {
+            height: 180px;
+            overflow: hidden;
         }
 
         .chart-container h3 {
@@ -90,8 +96,8 @@
         .artist-selector {
             background: white;
             border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
+            padding: 15px;
+            margin-bottom: 20px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.2);
@@ -213,8 +219,14 @@
             }
 
             .chart-container canvas {
-                height: 130px !important;
-                max-height: 130px;
+                height: 100px !important;
+                max-height: 100px;
+                width: 100% !important;
+            }
+            
+            .chart-container {
+                height: 140px;
+                overflow: hidden;
             }
         }
     </style>
