@@ -1,0 +1,135 @@
+{
+  "topArtists": {
+    "numUniqueArtists": 548,
+    "topArtists": [
+      {
+        "artistUri": "spotify:artist:504cl42JQLRqlZddfZ3S4z"
+      },
+      {
+        "artistUri": "spotify:artist:0YC192cP3KPCRWx8zr8MfZ"
+      },
+      {
+        "artistUri": "spotify:artist:1vCWHaC5f2uS3yhpwWbIA6"
+      },
+      {
+        "artistUri": "spotify:artist:4tZwfgrHOc3mvqYlEYSvVi"
+      },
+      {
+        "artistUri": "spotify:artist:6USv9qhCn6zfxlBQIYJ9qs"
+      }
+    ],
+    "topArtistMilliseconds": 59068231,
+    "topArtistFanPercentage": 0.010057349
+  },
+  "topPodcasts": {
+    "topPodcastsUri": [
+      "spotify:show:1KehxPpd8UApHi2PDjIMST"
+    ],
+    "topPodcastMilliseconds": 5772155,
+    "topPodcastPercentage": 0.0,
+    "totalPodcastMilliseconds": 6742261
+  },
+  "topTracks": {
+    "topTracks": [
+      "spotify:track:5naar7XewEOAjOywIp6Jjq",
+      "spotify:track:09Rv6ctDE0t9z8zk5FINg8",
+      "spotify:track:5FQ77Cl1ndljtwwImdtjMy",
+      "spotify:track:2lHfpMTpLMIXQAhG5bWlXj",
+      "spotify:track:5ZXsanxzEjp1cVqtMgE0Nz"
+    ],
+    "topTrackPlayCount": 94,
+    "topTrackFirstPlayedDate": "2024-01-11",
+    "distinctTracksPlayed": 919
+  },
+  "yearlyMetrics": {
+    "totalMsListened": 855475193,
+    "mostListenedDay": "2024-03-29",
+    "mostListenedDayMinutes": 564.2241,
+    "percentGreaterThanWorldwideUsers": 75.22831
+  },
+  "musicEvolution": {
+    "eras": [
+      {
+        "key": "0",
+        "peakMonth": 3,
+        "color": "green",
+        "genre": "norwegian rock",
+        "mood": "funny",
+        "descriptor": "tavern",
+        "pivotalArtists": [
+          "spotify:artist:1s1DnVoBDfp3jxjjew8cBR",
+          "spotify:artist:4Eqk6wvSaia7pwOzPaqEQv",
+          "spotify:artist:5gsErkGsLeCYCSK0Pxj01N"
+        ],
+        "tracks": [
+          {
+            "trackName": "Splitter Pine",
+            "trackUri": "spotify:track:1JLdVHnYAGqr2tUD3LVN2c"
+          },
+          {
+            "trackName": "Hjerteknuser",
+            "trackUri": "spotify:track:3NThq9BqYtKYBfsHIogjM6"
+          },
+          {
+            "trackName": "Tusen dråper regn",
+            "trackUri": "spotify:track:0keOYIEWLBZh2LvpvQOtzS"
+          }
+        ]
+      },
+      {
+        "key": "1",
+        "peakMonth": 4,
+        "color": "red-yellow",
+        "genre": "edm",
+        "mood": "academic",
+        "descriptor": "early electronica",
+        "pivotalArtists": [
+          "spotify:artist:1vCWHaC5f2uS3yhpwWbIA6",
+          "spotify:artist:1h6Cn3P4NGzXbaXidqURXs",
+          "spotify:artist:6TLwD7HPWuiOzvXEa3oCNe"
+        ],
+        "tracks": [
+          {
+            "trackName": "I Could Be The One (Avicii Vs. Nicky Romero) - Radio Edit",
+            "trackUri": "spotify:track:1sh6lL6cmlcwhqZKGiKBua"
+          },
+          {
+            "trackName": "Without You (feat. Sandro Cavazza)",
+            "trackUri": "spotify:track:6Pgkp4qUoTmJIPn7ReaGxL"
+          },
+          {
+            "trackName": "Save The World",
+            "trackUri": "spotify:track:65hRZOQkVjmBdusz1N7aOv"
+          }
+        ]
+      },
+      {
+        "key": "2",
+        "peakMonth": 9,
+        "color": "yellow-blue",
+        "genre": "soundtrack",
+        "mood": "theatrical",
+        "descriptor": "fantasy",
+        "pivotalArtists": [
+          "spotify:artist:0YC192cP3KPCRWx8zr8MfZ",
+          "spotify:artist:1hCkSJcXREhrodeIHQdav8",
+          "spotify:artist:3EAHF3jdnHHdko5DBrhRUP"
+        ],
+        "tracks": [
+          {
+            "trackName": "Succession (Main Title Theme)",
+            "trackUri": "spotify:track:0bSHwuTOZVJUXWT03H9oD2"
+          },
+          {
+            "trackName": "Happiness Is Simple",
+            "trackUri": "spotify:track:7iFw1GrPSKTP7V8wr2HL7O"
+          },
+          {
+            "trackName": "Moog City",
+            "trackUri": "spotify:track:4Ar3oSp4bAw5gz22F70GM7"
+          }
+        ]
+      }
+    ]
+  }
+}
