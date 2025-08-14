@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Spotify Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Spotify Analytics Test</h1>
+    <div id="status">Loading...</div>
+    <div id="dataInfo"></div>
+    
+    <script>
+        async function testData() {
+            try {
+                const response = await fetch('spotify_data/StreamingHistory_music_0.json');
+                const data = await response.json();
+                
+                document.getElementById('status').textContent = '✅ Data loaded successfully!';
+                document.getElementById('dataInfo').innerHTML = `
+                    <h3>Data Summary:</h3>
+                    <p>Total streams: ${data.length}</p>
+                    <p>Sample entry:</p>
+                    <pre>${JSON.stringify(data[0], null, 2)}</pre>
+                `;
+                
+                // Test chart creation
+                const ctx = document.createElement('canvas');
+                ctx.width = 400;
+                ctx.height = 200;
+                document.body.appendChild(ctx);
+                
+                const chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Test'],
+                        datasets: [{
+                            label: 'Test Data',
+                            data: [100],
+                            backgroundColor: 'rgba(29, 185, 84, 0.8)'
+                        }]
+                    }
+                });
+                
+                document.getElementById('status').textContent += ' ✅ Chart created successfully!';
+                
+            } catch (error) {
+                document.getElementById('status').textContent = '❌ Error: ' + error.message;
+                console.error('Test failed:', error);
+            }
+        }
+        
+        testData();
+    </script>
+</body>
+</html>

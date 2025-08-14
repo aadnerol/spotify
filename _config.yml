@@ -1,0 +1,27 @@
+# GitHub Pages Configuration
+# This file is used by Jekyll to configure the site
+
+# Site settings
+title: "Spotify Streaming Analytics"
+description: "Interactive visualization of Spotify streaming data with charts and insights"
+author: "ådnerolstad"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Exclude from processing
+exclude:
+  - README.md
+  - .github
+  - .gitignore
+
+# Include in processing
+include:
+  - spotify_data
+
+# Collections
+collections:
+  data:
+    output: false
+    permalink: /:path/

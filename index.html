@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Streaming Analytics - ådnerolstad</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1db954, #1ed760);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .stat-card h3 {
+            color: #1db954;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .chart-container h3 {
+            color: #1db954;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .artist-selector {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .artist-selector h3 {
+            color: #1db954;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .select-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        select {
+            padding: 12px 20px;
+            border: 2px solid #1db954;
+            border-radius: 25px;
+            font-size: 1rem;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            min-width: 200px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #1ed760;
+            box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.1);
+        }
+
+        .artist-info {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            display: none;
+        }
+
+        .artist-info h3 {
+            color: #1db954;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .artist-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #1db954;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1db954;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1db954;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .select-container {
+                flex-direction: column;
+            }
+            
+            select {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎵 Spotify Analytics</h1>
+            <p>Streaming data insights for ådnerolstad</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>📊 Total Streams</h3>
+                <div id="totalStreams">Loading...</div>
+            </div>
+            <div class="stat-card">
+                <h3>⏱️ Total Time</h3>
+                <div id="totalTime">Loading...</div>
+            </div>
+            <div class="stat-card">
+                <h3>🎤 Unique Artists</h3>
+                <div id="uniqueArtists">Loading...</div>
+            </div>
+            <div class="stat-card">
+                <h3>🎵 Unique Tracks</h3>
+                <div id="uniqueTracks">Loading...</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3>🏆 Top 10 Most Streamed Artists</h3>
+            <canvas id="artistChart" width="400" height="200"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h3>🎵 Top 10 Most Streamed Songs</h3>
+            <canvas id="songChart" width="400" height="200"></canvas>
+        </div>
+
+        <div class="artist-selector">
+            <h3>🔍 Explore Artist</h3>
+            <div class="select-container">
+                <select id="artistSelect">
+                    <option value="">Select an artist...</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="artist-info" id="artistInfo">
+            <h3 id="selectedArtistName">Artist Name</h3>
+            <div class="artist-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="artistTotalTime">0</div>
+                    <div class="stat-label">Total Time</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="artistTotalStreams">0</div>
+                    <div class="stat-label">Total Streams</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="artistUniqueTracks">0</div>
+                    <div class="stat-label">Unique Tracks</div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3>Top Songs by This Artist</h3>
+                <canvas id="artistSongChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
