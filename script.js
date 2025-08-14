@@ -10,6 +10,8 @@ let artistSongChart = null;
 let artistChartView = 'time'; // 'time' or 'streams'
 let songChartView = 'time'; // 'time' or 'streams'
 
+
+
 // Common compact chart options to keep charts short
 const compactChartOptions = {
     responsive: true,
@@ -82,6 +84,7 @@ async function loadData() {
         
         processData();
         updateStats();
+        updateDataPeriod();
         createCharts();
         populateArtistSelect();
         setupChartToggles();
@@ -156,6 +159,31 @@ function updateStats() {
     document.getElementById('totalTime').textContent = formatTime(totalMs);
     document.getElementById('uniqueArtists').textContent = uniqueArtists.toLocaleString();
     document.getElementById('uniqueTracks').textContent = uniqueTracks.toLocaleString();
+}
+
+// Update the data period display
+function updateDataPeriod() {
+    if (streamingData.length === 0) {
+        document.getElementById('dataPeriod').textContent = 'No data available';
+        return;
+    }
+    
+    // Find earliest and latest dates
+    const dates = streamingData.map(stream => new Date(stream.endTime));
+    const earliestDate = new Date(Math.min(...dates));
+    const latestDate = new Date(Math.max(...dates));
+    
+    // Format dates as "Month Year"
+    const formatDate = (date) => {
+        const months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        return `${months[date.getMonth()]} ${date.getFullYear()}`;
+    };
+    
+    const periodText = `${formatDate(earliestDate)} - ${formatDate(latestDate)}`;
+    document.getElementById('dataPeriod').textContent = periodText;
 }
 
 // Create the main charts
@@ -344,6 +372,8 @@ function formatTime(ms) {
         return `${seconds}s`;
     }
 }
+
+
 
 // Setup chart toggle functionality
 function setupChartToggles() {

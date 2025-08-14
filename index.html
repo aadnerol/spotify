@@ -41,6 +41,28 @@
         .header p {
             font-size: 1.2rem;
             opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .data-period {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .period-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            margin-right: 8px;
+        }
+        
+        .period-dates {
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
         .stats-grid {
@@ -75,6 +97,8 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
 
+
+        
         .chart-toggle {
             display: flex;
             justify-content: center;
@@ -245,6 +269,8 @@
                 min-width: 100%;
             }
 
+
+            
             .chart-toggle {
                 gap: 6px;
                 margin-bottom: 8px;
@@ -273,6 +299,10 @@
         <div class="header">
             <h1>🎵 Spotify Analytics</h1>
             <p>Streaming data insights for ådnerolstad</p>
+            <div class="data-period">
+                <span class="period-label">📅 Data Period:</span>
+                <span class="period-dates" id="dataPeriod">Loading...</span>
+            </div>
         </div>
 
         <div class="stats-grid">
