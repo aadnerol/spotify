@@ -6,6 +6,46 @@ let artistChart = null;
 let songChart = null;
 let artistSongChart = null;
 
+// Common compact chart options to keep charts short
+const compactChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false, // honor CSS height
+    layout: { padding: 0 },
+    elements: {
+        bar: {
+            borderRadius: 6,
+            borderSkipped: false,
+            maxBarThickness: 22
+        }
+    },
+    plugins: {
+        legend: { display: false },
+        tooltip: {
+            callbacks: {
+                label: function(context) {
+                    return formatTime(context.parsed.y * 60 * 1000);
+                }
+            }
+        }
+    },
+    scales: {
+        x: {
+            grid: { display: false },
+            ticks: { font: { size: 10 } }
+        },
+        y: {
+            beginAtZero: true,
+            grid: { display: false },
+            ticks: {
+                font: { size: 10 },
+                callback: function(value) {
+                    return formatTime(value * 60 * 1000);
+                }
+            }
+        }
+    }
+};
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     loadData();
@@ -35,6 +75,10 @@ function processData() {
     songStats = {};
     
     streamingData.forEach(stream => {
+        // Validate record structure matches JSON: endTime, artistName, trackName, msPlayed
+        if (!stream || typeof stream.msPlayed !== 'number' || stream.msPlayed <= 0 || !stream.artistName || !stream.trackName) {
+            return;
+        }
         const artist = stream.artistName;
         const song = stream.trackName;
         const msPlayed = stream.msPlayed;
@@ -117,37 +161,10 @@ function createArtistChart() {
                 data: data,
                 backgroundColor: 'rgba(29, 185, 84, 0.8)',
                 borderColor: 'rgba(29, 185, 84, 1)',
-                borderWidth: 2,
-                borderRadius: 8,
-                borderSkipped: false,
+                borderWidth: 1
             }]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return formatTime(context.parsed.y * 60 * 1000);
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return formatTime(value * 60 * 1000);
-                        }
-                    }
-                }
-            }
-        }
+        options: compactChartOptions
     });
 }
 
@@ -172,37 +189,10 @@ function createSongChart() {
                 data: data,
                 backgroundColor: 'rgba(30, 215, 96, 0.8)',
                 borderColor: 'rgba(30, 215, 96, 1)',
-                borderWidth: 2,
-                borderRadius: 8,
-                borderSkipped: false,
+                borderWidth: 1
             }]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return formatTime(context.parsed.y * 60 * 1000);
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return formatTime(value * 60 * 1000);
-                        }
-                    }
-                }
-            }
-        }
+        options: compactChartOptions
     });
 }
 
@@ -284,37 +274,10 @@ function createArtistSongChart(artist) {
                 data: data,
                 backgroundColor: 'rgba(29, 185, 84, 0.6)',
                 borderColor: 'rgba(29, 185, 84, 1)',
-                borderWidth: 1,
-                borderRadius: 4,
-                borderSkipped: false,
+                borderWidth: 1
             }]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return formatTime(context.parsed.y * 60 * 1000);
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return formatTime(value * 60 * 1000);
-                        }
-                    }
-                }
-            }
-        }
+        options: compactChartOptions
     });
 }
 
