@@ -6,6 +6,10 @@ let artistChart = null;
 let songChart = null;
 let artistSongChart = null;
 
+// Chart view states
+let artistChartView = 'time'; // 'time' or 'streams'
+let songChartView = 'time'; // 'time' or 'streams'
+
 // Common compact chart options to keep charts short
 const compactChartOptions = {
     responsive: true,
@@ -23,7 +27,15 @@ const compactChartOptions = {
         tooltip: {
             callbacks: {
                 label: function(context) {
-                    return formatTime(context.parsed.y * 60 * 1000);
+                    // Check if this is a time-based chart or stream count
+                    const chartId = context.chart.canvas.id;
+                    if (chartId === 'artistChart' && artistChartView === 'time') {
+                        return formatTime(context.parsed.y * 60 * 1000);
+                    } else if (chartId === 'songChart' && songChartView === 'time') {
+                        return formatTime(context.parsed.y * 60 * 1000);
+                    } else {
+                        return context.parsed.y + ' streams';
+                    }
                 }
             }
         }
@@ -42,7 +54,15 @@ const compactChartOptions = {
                 font: { size: 9 },
                 maxTicksLimit: 5,
                 callback: function(value) {
-                    return formatTime(value * 60 * 1000);
+                    // Check if this is a time-based chart or stream count
+                    const chartId = this.chart.canvas.id;
+                    if (chartId === 'artistChart' && artistChartView === 'time') {
+                        return formatTime(value * 60 * 1000);
+                    } else if (chartId === 'songChart' && songChartView === 'time') {
+                        return formatTime(value * 60 * 1000);
+                    } else {
+                        return value;
+                    }
                 }
             }
         }
@@ -64,6 +84,7 @@ async function loadData() {
         updateStats();
         createCharts();
         populateArtistSelect();
+        setupChartToggles();
         
     } catch (error) {
         console.error('Error loading data:', error);
@@ -147,20 +168,31 @@ function createCharts() {
 function createArtistChart() {
     const ctx = document.getElementById('artistChart').getContext('2d');
     
-    // Get top 10 artists by total time
-    const topArtists = Object.entries(artistStats)
-        .sort(([,a], [,b]) => b.totalMs - a.totalMs)
-        .slice(0, 10);
+    // Get top 10 artists by current view
+    let topArtists, data, label;
+    
+    if (artistChartView === 'time') {
+        topArtists = Object.entries(artistStats)
+            .sort(([,a], [,b]) => b.totalMs - a.totalMs)
+            .slice(0, 10);
+        data = topArtists.map(([,stats]) => stats.totalMs / 1000 / 60); // Convert to minutes
+        label = 'Total Minutes Streamed';
+    } else {
+        topArtists = Object.entries(artistStats)
+            .sort(([,a], [,b]) => b.totalStreams - a.totalStreams)
+            .slice(0, 10);
+        data = topArtists.map(([,stats]) => stats.totalStreams);
+        label = 'Number of Streams';
+    }
     
     const labels = topArtists.map(([artist]) => artist);
-    const data = topArtists.map(([,stats]) => stats.totalMs / 1000 / 60); // Convert to minutes
     
     artistChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Total Minutes Streamed',
+                label: label,
                 data: data,
                 backgroundColor: 'rgba(29, 185, 84, 0.8)',
                 borderColor: 'rgba(29, 185, 84, 1)',
@@ -175,20 +207,31 @@ function createArtistChart() {
 function createSongChart() {
     const ctx = document.getElementById('songChart').getContext('2d');
     
-    // Get top 10 songs by total time
-    const topSongs = Object.entries(songStats)
-        .sort(([,a], [,b]) => b.totalMs - a.totalMs)
-        .slice(0, 10);
+    // Get top 10 songs by current view
+    let topSongs, data, label;
+    
+    if (songChartView === 'time') {
+        topSongs = Object.entries(songStats)
+            .sort(([,a], [,b]) => b.totalMs - a.totalMs)
+            .slice(0, 10);
+        data = topSongs.map(([,stats]) => stats.totalMs / 1000 / 60); // Convert to minutes
+        label = 'Total Minutes Streamed';
+    } else {
+        topSongs = Object.entries(songStats)
+            .sort(([,a], [,b]) => b.totalStreams - a.totalStreams)
+            .slice(0, 10);
+        data = topSongs.map(([,stats]) => stats.totalStreams);
+        label = 'Number of Streams';
+    }
     
     const labels = topSongs.map(([song]) => song.split(' - ')[0]);
-    const data = topSongs.map(([,stats]) => stats.totalMs / 1000 / 60); // Convert to minutes
     
     songChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Total Minutes Streamed',
+                label: label,
                 data: data,
                 backgroundColor: 'rgba(30, 215, 96, 0.8)',
                 borderColor: 'rgba(30, 215, 96, 1)',
@@ -300,6 +343,48 @@ function formatTime(ms) {
     } else {
         return `${seconds}s`;
     }
+}
+
+// Setup chart toggle functionality
+function setupChartToggles() {
+    const toggleButtons = document.querySelectorAll('.toggle-btn');
+    
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const chartType = this.dataset.chart;
+            const metric = this.dataset.metric;
+            
+            // Update active state
+            const chartToggles = this.parentElement.querySelectorAll('.toggle-btn');
+            chartToggles.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Update chart view state
+            if (chartType === 'artist') {
+                artistChartView = metric;
+                updateArtistChart();
+            } else if (chartType === 'song') {
+                songChartView = metric;
+                updateSongChart();
+            }
+        });
+    });
+}
+
+// Update artist chart with new view
+function updateArtistChart() {
+    if (artistChart) {
+        artistChart.destroy();
+    }
+    createArtistChart();
+}
+
+// Update song chart with new view
+function updateSongChart() {
+    if (songChart) {
+        songChart.destroy();
+    }
+    createSongChart();
 }
 
 // Show error message

@@ -75,6 +75,33 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
 
+        .chart-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .toggle-btn {
+            padding: 6px 12px;
+            border: 2px solid #1db954;
+            background: white;
+            color: #1db954;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .toggle-btn:hover {
+            background: #f0f8f0;
+        }
+        
+        .toggle-btn.active {
+            background: #1db954;
+            color: white;
+        }
+        
         .chart-container canvas {
             height: 120px !important;
             max-height: 120px;
@@ -82,7 +109,7 @@
         }
         
         .chart-container {
-            height: 180px;
+            height: 200px;
             overflow: hidden;
         }
 
@@ -218,6 +245,16 @@
                 min-width: 100%;
             }
 
+            .chart-toggle {
+                gap: 6px;
+                margin-bottom: 8px;
+            }
+            
+            .toggle-btn {
+                padding: 5px 10px;
+                font-size: 0.75rem;
+            }
+            
             .chart-container canvas {
                 height: 100px !important;
                 max-height: 100px;
@@ -225,7 +262,7 @@
             }
             
             .chart-container {
-                height: 140px;
+                height: 160px;
                 overflow: hidden;
             }
         }
@@ -259,11 +296,19 @@
 
         <div class="chart-container">
             <h3>🏆 Top 10 Most Streamed Artists</h3>
+            <div class="chart-toggle">
+                <button class="toggle-btn active" data-chart="artist" data-metric="time">Total Time</button>
+                <button class="toggle-btn" data-chart="artist" data-metric="streams">Number of Streams</button>
+            </div>
             <canvas id="artistChart" width="400" height="150"></canvas>
         </div>
 
         <div class="chart-container">
             <h3>🎵 Top 10 Most Streamed Songs</h3>
+            <div class="chart-toggle">
+                <button class="toggle-btn active" data-chart="song" data-metric="time">Total Time</button>
+                <button class="toggle-btn" data-chart="song" data-metric="streams">Number of Streams</button>
+            </div>
             <canvas id="songChart" width="400" height="150"></canvas>
         </div>
 
